@@ -1,0 +1,165 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Calculadora de Médias</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #eef2f7;
+    display: flex;
+    justify-content: center;
+    padding: 30px 15px;
+}
+
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 450px;
+    width: 100%;
+    box-shadow: 0 4px 15px #0002;
+}
+
+h1 {
+    text-align: center;
+    color: #17365d;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 20px;
+    background: #176b45;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #105336;
+}
+
+#resultado {
+    margin-top: 20px;
+    padding: 15px;
+    background: #edf7f0;
+    border-radius: 8px;
+    line-height: 1.8;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Calculadora de Médias</h1>
+
+<p>Informe suas notas trimestrais:</p>
+
+<label>1º Trimestre — Peso 3</label>
+<input type="number" id="nota1" min="0" max="10" step="0.1">
+
+<label>2º Trimestre — Peso 3</label>
+<input type="number" id="nota2" min="0" max="10" step="0.1">
+
+<label>3º Trimestre — Peso 4</label>
+<input type="number" id="nota3" min="0" max="10" step="0.1">
+
+<button onclick="calcular()">Calcular média</button>
+
+<div id="resultado"></div>
+
+</div>
+
+<script>
+
+function calcular() {
+
+    let nota1 = Number(document.getElementById("nota1").value);
+    let nota2 = Number(document.getElementById("nota2").value);
+    let nota3 = Number(document.getElementById("nota3").value);
+
+    let resultado = document.getElementById("resultado");
+
+    if (
+        document.getElementById("nota1").value === "" ||
+        document.getElementById("nota2").value === "" ||
+        document.getElementById("nota3").value === ""
+    ) {
+        resultado.innerHTML = "Preencha todas as notas.";
+        return;
+    }
+
+    if (
+        nota1 < 0 || nota1 > 10 ||
+        nota2 < 0 || nota2 > 10 ||
+        nota3 < 0 || nota3 > 10
+    ) {
+        resultado.innerHTML = "As notas devem estar entre 0 e 10.";
+        return;
+    }
+
+    let mediaprovisoria = (nota1 * 3 + nota2 * 3) / 6;
+
+    let nota3necessaria =
+        (60 - nota1 * 3 - nota2 * 3) / 4;
+
+    let mediageral =
+        (nota1 * 3 + nota2 * 3 + nota3 * 4) / 10;
+
+    let mensagem = "";
+
+    mensagem += "<h3>Resultado</h3>";
+
+    mensagem += "Média provisória: " +
+        mediaprovisoria.toFixed(2) + "<br>";
+
+    if (nota3necessaria <= 0) {
+        mensagem += "A pontuação dos dois primeiros trimestres já corresponde a pelo menos 60 pontos ponderados.<br>";
+    } else if (nota3necessaria <= 10) {
+        mensagem += "Nota necessária no 3º trimestre: " +
+            nota3necessaria.toFixed(2) + "<br>";
+    } else {
+        mensagem += "Mesmo com nota 10, não será atingida a média 6.<br>";
+    }
+
+    mensagem += "<hr>";
+
+    mensagem += "<h2>Média final: " +
+        mediageral.toFixed(2) + "</h2>";
+
+    if (mediageral >= 6) {
+        mensagem += "<h3 style='color:green'>Parabéns! Você está aprovado!</h3>";
+    } else {
+        mensagem += "<h3 style='color:red'>Nota insuficiente para aprovação.</h3>";
+    }
+
+    resultado.innerHTML = mensagem;
+}
+
+</script>
+
+</body>
+</html>
