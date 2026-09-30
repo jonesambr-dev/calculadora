@@ -93,6 +93,7 @@ button:hover {
 
 </div>
 
+<script>
 
 function calcular() {
 
@@ -102,9 +103,9 @@ function calcular() {
 
     let resultado = document.getElementById("resultado");
 
-    // Verifica se as duas primeiras notas foram informadas
+    // Verifica as duas primeiras notas
     if (campo1 === "" || campo2 === "") {
-        resultado.innerHTML = "Informe as notas do primeiro e do segundo trimestres.";
+        resultado.innerHTML = "Informe as notas do primeiro e segundo trimestres.";
         return;
     }
 
@@ -113,10 +114,14 @@ function calcular() {
     let nota3 = Number(campo3);
 
     // Validação das notas
-    if (nota1 < 0 || nota1 > 10 ||
+    if (
+        !Number.isFinite(nota1) ||
+        !Number.isFinite(nota2) ||
+        (campo3 !== "" && !Number.isFinite(nota3)) ||
+        nota1 < 0 || nota1 > 10 ||
         nota2 < 0 || nota2 > 10 ||
-        (campo3 !== "" && (nota3 < 0 || nota3 > 10))) {
-
+        (campo3 !== "" && (nota3 < 0 || nota3 > 10))
+    ) {
         resultado.innerHTML = "As notas devem estar entre 0 e 10.";
         return;
     }
@@ -137,7 +142,7 @@ function calcular() {
 
     if (nota3necessaria <= 0) {
 
-        mensagem += "Parabéns! Você já atingiu a pontuação ponderada necessária para média 6.<br>";
+        mensagem += "Você já atingiu a pontuação ponderada necessária para média 6.<br>";
 
     } else if (nota3necessaria <= 10) {
 
@@ -150,7 +155,7 @@ function calcular() {
 
     }
 
-    // Calcula a média final somente se a terceira nota foi informada
+    // Calcula a média final se a terceira nota foi informada
     if (campo3 !== "") {
 
         let mediageral =
@@ -174,7 +179,8 @@ function calcular() {
 
     resultado.innerHTML = mensagem;
 }
+
 </script>
-        
+
 </body>
 </html>
