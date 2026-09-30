@@ -93,73 +93,88 @@ button:hover {
 
 </div>
 
-<script>
 
 function calcular() {
 
-    let nota1 = Number(document.getElementById("nota1").value);
-    let nota2 = Number(document.getElementById("nota2").value);
-    let nota3 = Number(document.getElementById("nota3").value);
+    let campo1 = document.getElementById("nota1").value;
+    let campo2 = document.getElementById("nota2").value;
+    let campo3 = document.getElementById("nota3").value;
 
     let resultado = document.getElementById("resultado");
 
-    if (
-        document.getElementById("nota1").value === "" ||
-        document.getElementById("nota2").value === "" ||
-        document.getElementById("nota3").value === ""
-    ) {
-        resultado.innerHTML = "Preencha todas as notas.";
+    // Verifica se as duas primeiras notas foram informadas
+    if (campo1 === "" || campo2 === "") {
+        resultado.innerHTML = "Informe as notas do primeiro e do segundo trimestres.";
         return;
     }
 
-    if (
-        nota1 < 0 || nota1 > 10 ||
+    let nota1 = Number(campo1);
+    let nota2 = Number(campo2);
+    let nota3 = Number(campo3);
+
+    // Validação das notas
+    if (nota1 < 0 || nota1 > 10 ||
         nota2 < 0 || nota2 > 10 ||
-        nota3 < 0 || nota3 > 10
-    ) {
+        (campo3 !== "" && (nota3 < 0 || nota3 > 10))) {
+
         resultado.innerHTML = "As notas devem estar entre 0 e 10.";
         return;
     }
 
+    // Média parcial dos dois primeiros trimestres
     let mediaprovisoria = (nota1 * 3 + nota2 * 3) / 6;
 
+    // Nota necessária no terceiro trimestre para média 6
     let nota3necessaria =
         (60 - nota1 * 3 - nota2 * 3) / 4;
 
-    let mediageral =
-        (nota1 * 3 + nota2 * 3 + nota3 * 4) / 10;
-
     let mensagem = "";
 
-    mensagem += "<h3>Resultado</h3>";
+    mensagem += "<h3>Resultado parcial</h3>";
 
-    mensagem += "Média provisória: " +
-        mediaprovisoria.toFixed(2) + "<br>";
+    mensagem += "Média dos dois primeiros trimestres: " +
+        mediaprovisoria.toFixed(2) + "<br><br>";
 
     if (nota3necessaria <= 0) {
-        mensagem += "A pontuação dos dois primeiros trimestres já corresponde a pelo menos 60 pontos ponderados.<br>";
+
+        mensagem += "Parabéns! Você já atingiu a pontuação ponderada necessária para média 6.<br>";
+
     } else if (nota3necessaria <= 10) {
-        mensagem += "Nota necessária no 3º trimestre: " +
-            nota3necessaria.toFixed(2) + "<br>";
+
+        mensagem += "<strong>Nota necessária no terceiro trimestre: " +
+            nota3necessaria.toFixed(2) + "</strong><br>";
+
     } else {
-        mensagem += "Mesmo com nota 10, não será atingida a média 6.<br>";
+
+        mensagem += "<strong>Mesmo tirando 10 no terceiro trimestre, você não atingirá a média 6.</strong><br>";
+
     }
 
-    mensagem += "<hr>";
+    // Calcula a média final somente se a terceira nota foi informada
+    if (campo3 !== "") {
 
-    mensagem += "<h2>Média final: " +
-        mediageral.toFixed(2) + "</h2>";
+        let mediageral =
+            (nota1 * 3 + nota2 * 3 + nota3 * 4) / 10;
 
-    if (mediageral >= 6) {
-        mensagem += "<h3 style='color:green'>Parabéns! Você está aprovado!</h3>";
-    } else {
-        mensagem += "<h3 style='color:red'>Nota insuficiente para aprovação.</h3>";
+        mensagem += "<hr>";
+
+        mensagem += "<h2>Média geral final: " +
+            mediageral.toFixed(2) + "</h2>";
+
+        if (mediageral >= 6) {
+
+            mensagem += "<h3 style='color:green'>Parabéns! Você está aprovado!</h3>";
+
+        } else {
+
+            mensagem += "<h3 style='color:red'>Nota insuficiente para aprovação.</h3>";
+
+        }
     }
 
     resultado.innerHTML = mensagem;
 }
-
 </script>
-
+        
 </body>
 </html>
